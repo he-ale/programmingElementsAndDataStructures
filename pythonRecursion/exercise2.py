@@ -13,6 +13,8 @@ def isPrimeNumber(n: int, i: int)->bool:
 
 def exercise2(n: int)->bool:
     i= int(math.sqrt(n))
+    if n==1 or n==0:
+        return False
     return isPrimeNumber(n=n, i=i)
 
 print(exercise2(37))

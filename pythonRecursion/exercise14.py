@@ -1,8 +1,7 @@
 
 
 def exercise14(n: int):
-    digit= n%10
-    if (digit%2==1):
+    if (n%2==1):
         return False
     
     if (n==0):
@@ -17,4 +16,4 @@ def other(n:int):
         n= n//10
     return res
 
-print(other(212))
+print(other(242))
