@@ -1,14 +1,9 @@
-# Modifyed to 
-# num   : 3 1 1 2 3
-# index : 0 1 2 3 4
-# and count pair index and pair number
-
 #########################################
 # Solution 1 (better)
 #########################################
 def exercise30(n: int, a: int=0, b: int=0, flag: bool= True):
     if n==0:
-        return b if flag else a
+        return a if not flag else b
     
     aux= n%10
 
@@ -62,8 +57,6 @@ def other(n: int):
 print(exercise30(22005))
 print(exercise30(201414))
 
-print(exercise30v2(22005))
-print(exercise30v2(201414))
 
 print(other(22005))
 print(other(201414))

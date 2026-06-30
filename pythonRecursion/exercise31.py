@@ -1,85 +1,69 @@
+#########################################
+# Recursive solution 
+#########################################
+
 class Exercise31:
 
     bills= [100, 50, 20, 10, 5, 2, 1]
     cents= [50, 25, 10, 5, 1]
 
-
-    def __getCents__(self, amount:int, i=0, counter= 0):
-        if 0<=amount<1:
-            if counter==0:
-                return ""
-        
-        if(self.cents[i]>amount):
-            return self.__getCents__(amount, i+1, 0)
-        
-        amount-=self.cents[i]
-        counter+=1
-
-        if(amount<self.cents[i]):
-            return str(counter)+":"+str(self.cents[i])+"cents "+self.__getCents__(amount, i+1, 0)
-        
-        return self.__getCents__(amount, i, counter)
-        
-    def equivalent(self, amount, i= 0, counter= 0):
+    def __fractionate__(self, amount, xs, prefix, i=0, counter= 0):
         if(0<=amount<1):
+            if prefix=='cents':
+                return ""
             if counter==0:
-                return self.__getCents__(amount*100)
-            return str(counter)+":"+str(self.bills[i])+ " "+ self.__getCents__((amount*100)//1)
+                return self.__fractionate__(amount*100, self.cents, 'cents', 0, 0)
+            return str(counter)+":"+str(xs[i])+ prefix+" "+ self.__fractionate__(amount*100, self.cents, 'cents', 0, 0)
 
-        if(self.bills[i]>amount):
-            return self.equivalent(amount, i+1)
+        if(xs[i]>amount):
+            return self.__fractionate__(amount, xs, prefix, i+1, 0)
         
-        amount= amount-self.bills[i]
+        amount= amount-xs[i]
         counter+=1
-        if(amount<self.bills[i]):
-            return str(counter)+":"+str(self.bills[i])+"$ " + self.equivalent(amount, i+1, 0)
+        if(amount<xs[i]):
+            return str(counter)+":"+str(xs[i])+prefix+" " + self.__fractionate__(amount, xs, prefix, i+1, 0)
         
-        return self.equivalent(amount, i, counter)
+        return self.__fractionate__(amount, xs, prefix, i, counter)
 
 
+    def equivalent(self, amount, i= 0, counter= 0):
+        return self.__fractionate__(amount, self.bills, '$', 0, 0)
 
+#########################################
+# Iterative solution 
+#########################################
 
 class Other:
 
     bills= [100, 50, 20, 10, 5, 2, 1]
     cents= [50, 25, 10, 5, 1]
 
-    def __getCents__(self, amount):
-        pass
-    
-    def equivalent(self, amount):
+    def __fractionate__(self, amount, xs, prefix):
         i= 0
         counter= 0
         res= ""
         while 1<=amount:
-            if(self.bills[i]>amount):
+            if(xs[i]>amount):
                 if(counter>0):
-                    res= res+ str(counter)+":"+ str(self.bills[i])+"$ "
+                    res= f"{res}{counter}:{xs[i]}{prefix} "
                     counter=0
                 i+=1
             else:
-                amount-=self.bills[i]
+                amount-=xs[i]
                 counter+=1
         
         if counter>0:
-            res= res+ str(counter)+":"+ str(self.bills[i])+"$ "
-        
+            res= f"{res}{counter}:{xs[i]}{prefix} "
+        return (res, amount)   
+         
+    
+    def equivalent(self, amount):
+        res, amount= self.__fractionate__(amount, self.bills, '$')
+               
         amount=(amount*100)//1
-        counter= 0
-        i=0
+        res2, _= self.__fractionate__(amount, self.cents, 'cents')
 
-        while 0 < amount:
-            if(self.cents[i]>amount):
-                if(counter>0):
-                    res= res+ str(counter)+":"+ str(self.cents[i])+"cents "
-                    counter=0
-                i+=1
-            else:
-                amount-=self.cents[i]
-                counter+=1
-        if counter>0:
-            res= res+ str(counter)+":"+ str(self.bills[i])+"cents "
-        return res
+        return f"{res}{res2}"
 
 e31= Exercise31()
 print(e31.equivalent(233.80))
