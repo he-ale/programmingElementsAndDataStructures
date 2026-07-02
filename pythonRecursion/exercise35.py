@@ -1,5 +1,8 @@
 from typing import List
 
+#########################################
+# Recursive solution 
+#########################################
 def convination(n, k):
     if (k==0 or k==n):
         return 1
@@ -21,6 +24,9 @@ def exercise35(n: int):
     getLevel(n, xs, 0)    
     return " ".join(xs)
 
+#########################################
+# Iterative solution 
+#########################################
 def other(n: int):
     xs= []
     i= 0
